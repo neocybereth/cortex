@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useChat, type UIMessage } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 // Health metrics card component
 function MetricCard({
@@ -29,9 +31,7 @@ function MetricCard({
             <span className={`text-3xl font-bold ${color}`}>{value}</span>
             {unit && <span className="text-sm text-gray-500">{unit}</span>}
           </div>
-          {subtitle && (
-            <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
-          )}
+          {subtitle && <p className="text-xs text-gray-500 mt-1">{subtitle}</p>}
         </div>
         <div className={`text-4xl ${color} opacity-80`}>{icon}</div>
       </div>
@@ -40,7 +40,7 @@ function MetricCard({
 }
 
 // Tool call display component
-function ToolCallDisplay({ toolCall }: { toolCall: any }) {
+function ToolCallDisplay({ toolCall }: { toolCall: { toolName: string } }) {
   const getToolInfo = (toolName: string) => {
     const toolInfo: Record<
       string,
@@ -130,7 +130,9 @@ function ToolCallDisplay({ toolCall }: { toolCall: any }) {
   const info = getToolInfo(toolCall.toolName);
 
   return (
-    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm ${info.color} font-medium`}>
+    <div
+      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm ${info.color} font-medium`}
+    >
       <span>{info.icon}</span>
       <span>{info.label}</span>
     </div>
@@ -308,7 +310,7 @@ export default function Home() {
                     <div
                       className={`max-w-3xl rounded-2xl px-6 py-4 ${
                         message.role === "user"
-                          ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+                          ? "bg-linear-to-br from-blue-600 to-purple-600 text-white"
                           : "bg-white shadow-md text-gray-800"
                       }`}
                     >
@@ -320,18 +322,193 @@ export default function Home() {
                       <div className="space-y-3">
                         {message.parts.map((part, idx) => {
                           if (part.type === "text") {
+                            const isUser = message.role === "user";
                             return (
                               <div
                                 key={idx}
-                                className="whitespace-pre-wrap leading-relaxed"
+                                className="prose prose-sm max-w-none leading-relaxed"
                               >
-                                {part.text}
+                                <ReactMarkdown
+                                  remarkPlugins={[remarkGfm]}
+                                  components={{
+                                    table: ({ children }) => (
+                                      <div className="overflow-x-auto my-4">
+                                        <table
+                                          className={`min-w-full divide-y ${
+                                            isUser
+                                              ? "divide-white/20 border-white/30"
+                                              : "divide-gray-200 border-gray-200"
+                                          } border rounded-lg`}
+                                        >
+                                          {children}
+                                        </table>
+                                      </div>
+                                    ),
+                                    thead: ({ children }) => (
+                                      <thead
+                                        className={
+                                          isUser
+                                            ? "bg-white/10"
+                                            : "bg-gradient-to-r from-blue-50 to-purple-50"
+                                        }
+                                      >
+                                        {children}
+                                      </thead>
+                                    ),
+                                    tbody: ({ children }) => (
+                                      <tbody
+                                        className={`${
+                                          isUser
+                                            ? "bg-white/5 divide-white/10"
+                                            : "bg-white divide-gray-200"
+                                        } divide-y`}
+                                      >
+                                        {children}
+                                      </tbody>
+                                    ),
+                                    tr: ({ children }) => (
+                                      <tr
+                                        className={
+                                          isUser
+                                            ? "hover:bg-white/10"
+                                            : "hover:bg-gray-50"
+                                        }
+                                      >
+                                        {children}
+                                      </tr>
+                                    ),
+                                    th: ({ children }) => (
+                                      <th
+                                        className={`px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider ${
+                                          isUser
+                                            ? "text-white"
+                                            : "text-gray-700"
+                                        }`}
+                                      >
+                                        {children}
+                                      </th>
+                                    ),
+                                    td: ({ children }) => (
+                                      <td
+                                        className={`px-4 py-3 text-sm ${
+                                          isUser
+                                            ? "text-white"
+                                            : "text-gray-800"
+                                        }`}
+                                      >
+                                        {children}
+                                      </td>
+                                    ),
+                                    h1: ({ children }) => (
+                                      <h1
+                                        className={`text-2xl font-bold mb-4 mt-6 ${
+                                          isUser
+                                            ? "text-white"
+                                            : "text-gray-900"
+                                        }`}
+                                      >
+                                        {children}
+                                      </h1>
+                                    ),
+                                    h2: ({ children }) => (
+                                      <h2
+                                        className={`text-xl font-bold mb-3 mt-5 ${
+                                          isUser
+                                            ? "text-white"
+                                            : "text-gray-900"
+                                        }`}
+                                      >
+                                        {children}
+                                      </h2>
+                                    ),
+                                    h3: ({ children }) => (
+                                      <h3
+                                        className={`text-lg font-semibold mb-2 mt-4 ${
+                                          isUser
+                                            ? "text-white"
+                                            : "text-gray-800"
+                                        }`}
+                                      >
+                                        {children}
+                                      </h3>
+                                    ),
+                                    ul: ({ children }) => (
+                                      <ul
+                                        className={`list-disc list-inside space-y-1 my-3 ${
+                                          isUser
+                                            ? "text-white"
+                                            : "text-gray-800"
+                                        }`}
+                                      >
+                                        {children}
+                                      </ul>
+                                    ),
+                                    ol: ({ children }) => (
+                                      <ol
+                                        className={`list-decimal list-inside space-y-1 my-3 ${
+                                          isUser
+                                            ? "text-white"
+                                            : "text-gray-800"
+                                        }`}
+                                      >
+                                        {children}
+                                      </ol>
+                                    ),
+                                    li: ({ children }) => (
+                                      <li className="ml-4">{children}</li>
+                                    ),
+                                    p: ({ children }) => (
+                                      <p
+                                        className={`mb-3 leading-relaxed ${
+                                          isUser
+                                            ? "text-white"
+                                            : "text-gray-800"
+                                        }`}
+                                      >
+                                        {children}
+                                      </p>
+                                    ),
+                                    strong: ({ children }) => (
+                                      <strong
+                                        className={`font-semibold ${
+                                          isUser
+                                            ? "text-white"
+                                            : "text-gray-900"
+                                        }`}
+                                      >
+                                        {children}
+                                      </strong>
+                                    ),
+                                    code: ({ children }) => (
+                                      <code
+                                        className={`px-1.5 py-0.5 rounded text-sm font-mono ${
+                                          isUser
+                                            ? "bg-white/20 text-white"
+                                            : "bg-gray-100 text-gray-800"
+                                        }`}
+                                      >
+                                        {children}
+                                      </code>
+                                    ),
+                                    pre: ({ children }) => (
+                                      <pre
+                                        className={`p-4 rounded-lg overflow-x-auto my-3 ${
+                                          isUser ? "bg-white/10" : "bg-gray-100"
+                                        }`}
+                                      >
+                                        {children}
+                                      </pre>
+                                    ),
+                                  }}
+                                >
+                                  {part.text}
+                                </ReactMarkdown>
                               </div>
                             );
                           } else if (part.type === "tool-call") {
                             return (
                               <div key={idx} className="my-2">
-                                <ToolCallDisplay toolCall={part} />
+                                <ToolCallDisplay toolCall={part as never} />
                               </div>
                             );
                           } else if (

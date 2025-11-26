@@ -1,12 +1,12 @@
-import { createOpenAI, openai } from "@ai-sdk/openai";
+import { createOpenRouter } from "@openrouter/ai-sdk-provider"; // New import
 import { convertToModelMessages, streamText, UIMessage } from "ai";
 import { createOuraTools } from "@/lib/oura-tools";
 import { DEFAULT_MODEL } from "@/utils";
 
 export const maxDuration = 30;
 
-const openrouter = createOpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
+const openrouter = createOpenRouter({
+  // Updated: Use createOpenRouter
   apiKey: process.env.OPENROUTER_API_KEY!,
 });
 
@@ -15,6 +15,9 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const { messages }: { messages: UIMessage[] } = body;
+
+    console.log("[Chat API] Request body:", JSON.stringify(body, null, 2));
+    console.log("[Chat API] Messages:", messages);
 
     const ouraToken = process.env.OURA_ACCESS_TOKEN;
 
@@ -31,9 +34,8 @@ export async function POST(req: Request) {
     // Get current date for the AI to use
     const today = new Date().toISOString().split("T")[0];
 
-    console.log("[Chat API] Starting streamText with model:", DEFAULT_MODEL);
     const result = streamText({
-      model: openrouter(DEFAULT_MODEL),
+      model: openrouter(DEFAULT_MODEL), // No change here, but now it's fully compatible
       system: `You are Cortex, an AI assistant that helps users understand their Oura Ring health data. 
 Today's date is ${today}. When users ask about recent data (like "this week" or "yesterday"), calculate the appropriate dates based on today's date.
 Always use YYYY-MM-DD format for dates when calling the Oura tools.
@@ -41,10 +43,14 @@ Provide insights and interpretations of the data in a helpful, conversational wa
       messages: convertToModelMessages(messages),
       temperature: 0.5,
       tools: ouraTools,
-      stopWhen: (step) => step.steps.length > 10,
+      onError: (error) => {
+        console.log("[Chat API] ERRORRRRR:", error);
+      },
+      onFinish: ({ text }) => {
+        console.log("Full streamed response:", text);
+      },
     });
-
-    return result.toUIMessageStreamResponse();
+    return result.toUIMessageStreamResponse(); // No change
   } catch (error) {
     console.error("[Chat API] Error:", error);
     console.error(
