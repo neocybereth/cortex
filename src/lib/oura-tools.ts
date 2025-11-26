@@ -196,5 +196,113 @@ export function createOuraTools(credentials: OuraCredentials) {
         return await ouraFetch(url.toString(), headers, "getSessions");
       },
     }),
+
+    getSleep: tool({
+      description:
+        "Get detailed sleep data from Oura Ring (including sleep stages, heart rate during sleep, etc.) for a specific date range",
+      inputSchema: z.object({
+        startDate: z.string().describe("Start date in YYYY-MM-DD format"),
+        endDate: z
+          .string()
+          .optional()
+          .describe("End date in YYYY-MM-DD format"),
+      }),
+      execute: async ({ startDate, endDate }) => {
+        const url = new URL(`${OURA_API_BASE}/usercollection/sleep`);
+        url.searchParams.append("start_date", startDate);
+        if (endDate) url.searchParams.append("end_date", endDate);
+
+        return await ouraFetch(url.toString(), headers, "getSleep");
+      },
+    }),
+
+    getSleepTime: tool({
+      description:
+        "Get optimal bedtime recommendations and sleep timing data from Oura Ring for a specific date range",
+      inputSchema: z.object({
+        startDate: z.string().describe("Start date in YYYY-MM-DD format"),
+        endDate: z
+          .string()
+          .optional()
+          .describe("End date in YYYY-MM-DD format"),
+      }),
+      execute: async ({ startDate, endDate }) => {
+        const url = new URL(`${OURA_API_BASE}/usercollection/sleep_time`);
+        url.searchParams.append("start_date", startDate);
+        if (endDate) url.searchParams.append("end_date", endDate);
+
+        return await ouraFetch(url.toString(), headers, "getSleepTime");
+      },
+    }),
+
+    getTags: tool({
+      description:
+        "Get user-created tags from Oura Ring for a specific date range",
+      inputSchema: z.object({
+        startDate: z.string().describe("Start date in YYYY-MM-DD format"),
+        endDate: z
+          .string()
+          .optional()
+          .describe("End date in YYYY-MM-DD format"),
+      }),
+      execute: async ({ startDate, endDate }) => {
+        const url = new URL(`${OURA_API_BASE}/usercollection/tag`);
+        url.searchParams.append("start_date", startDate);
+        if (endDate) url.searchParams.append("end_date", endDate);
+
+        return await ouraFetch(url.toString(), headers, "getTags");
+      },
+    }),
+
+    getEnhancedTags: tool({
+      description:
+        "Get enhanced tags with additional metadata from Oura Ring for a specific date range",
+      inputSchema: z.object({
+        startDate: z.string().describe("Start date in YYYY-MM-DD format"),
+        endDate: z
+          .string()
+          .optional()
+          .describe("End date in YYYY-MM-DD format"),
+      }),
+      execute: async ({ startDate, endDate }) => {
+        const url = new URL(`${OURA_API_BASE}/usercollection/enhanced_tag`);
+        url.searchParams.append("start_date", startDate);
+        if (endDate) url.searchParams.append("end_date", endDate);
+
+        return await ouraFetch(url.toString(), headers, "getEnhancedTags");
+      },
+    }),
+
+    getRestModePeriods: tool({
+      description:
+        "Get rest mode periods from Oura Ring when rest mode was enabled for a specific date range",
+      inputSchema: z.object({
+        startDate: z.string().describe("Start date in YYYY-MM-DD format"),
+        endDate: z
+          .string()
+          .optional()
+          .describe("End date in YYYY-MM-DD format"),
+      }),
+      execute: async ({ startDate, endDate }) => {
+        const url = new URL(`${OURA_API_BASE}/usercollection/rest_mode_period`);
+        url.searchParams.append("start_date", startDate);
+        if (endDate) url.searchParams.append("end_date", endDate);
+
+        return await ouraFetch(url.toString(), headers, "getRestModePeriods");
+      },
+    }),
+
+    getRingConfiguration: tool({
+      description:
+        "Get Oura Ring device configuration and settings (color, size, firmware version, etc.)",
+      inputSchema: z.object({}),
+      execute: async ({}) => {
+        return await ouraFetch(
+          `${OURA_API_BASE}/usercollection/ring_configuration`,
+          headers,
+          "getRingConfiguration"
+        );
+      },
+    }),
   };
 }
