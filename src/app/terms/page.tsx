@@ -1,3 +1,11 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description:
+    "Read the terms and conditions for using OuraGPT, your AI-powered Oura Ring health data assistant.",
+};
+
 export default function Terms() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -9,14 +17,14 @@ export default function Terms() {
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-black mb-4">Agreement to Terms</h2>
             <p className="text-black mb-4">
-              By accessing and using Cortex ("the Service"), you accept and agree to be bound by the terms and provision of this agreement.
+              By accessing and using OuraGPT ("the Service"), you accept and agree to be bound by the terms and provision of this agreement.
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-black mb-4">Description of Service</h2>
             <p className="text-black mb-4">
-              Cortex is a personal health data analysis application that connects to your Oura Ring to provide AI-powered insights and analysis of your health and wellness data.
+              OuraGPT is a personal health data analysis application that connects to your Oura Ring to provide AI-powered insights and analysis of your health and wellness data.
             </p>
           </section>
 
@@ -35,7 +43,7 @@ export default function Terms() {
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-black mb-4">Health Data and Medical Disclaimer</h2>
             <p className="text-black mb-4">
-              <strong>IMPORTANT:</strong> Cortex is for informational purposes only and is not intended to:
+              <strong>IMPORTANT:</strong> OuraGPT is for informational purposes only and is not intended to:
             </p>
             <ul className="list-disc list-inside text-black mb-4 ml-4">
               <li>Provide medical advice, diagnosis, or treatment</li>
@@ -63,14 +71,14 @@ export default function Terms() {
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-black mb-4">Intellectual Property</h2>
             <p className="text-black mb-4">
-              The Service and its original content, features, and functionality are and will remain the exclusive property of Cortex and its licensors. The Service is protected by copyright, trademark, and other laws.
+              The Service and its original content, features, and functionality are and will remain the exclusive property of OuraGPT and its licensors. The Service is protected by copyright, trademark, and other laws.
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-black mb-4">Limitation of Liability</h2>
             <p className="text-black mb-4">
-              In no event shall Cortex, its directors, employees, partners, agents, suppliers, or affiliates be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your use of the Service.
+              In no event shall OuraGPT, its directors, employees, partners, agents, suppliers, or affiliates be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your use of the Service.
             </p>
           </section>
 

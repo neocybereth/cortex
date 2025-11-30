@@ -23,19 +23,19 @@ function MetricCard({
   subtitle?: string;
 }) {
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+    <article className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
+          <h3 className="text-sm font-medium text-gray-600 mb-1">{title}</h3>
           <div className="flex items-baseline gap-2">
-            <span className={`text-3xl font-bold ${color}`}>{value}</span>
-            {unit && <span className="text-sm text-gray-500">{unit}</span>}
+            <span className={`text-3xl font-bold ${color}`} aria-label={`${value} ${unit || ""}`}>{value}</span>
+            {unit && <span className="text-sm text-gray-500" aria-hidden="true">{unit}</span>}
           </div>
           {subtitle && <p className="text-xs text-gray-500 mt-1">{subtitle}</p>}
         </div>
-        <div className={`text-4xl ${color} opacity-80`}>{icon}</div>
+        <div className={`text-4xl ${color} opacity-80`} aria-hidden="true">{icon}</div>
       </div>
-    </div>
+    </article>
   );
 }
 
@@ -177,52 +177,54 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <nav className="max-w-7xl mx-auto px-4 py-4" aria-label="Main navigation">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-                <span className="text-white text-xl font-bold">C</span>
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center" aria-hidden="true">
+                <span className="text-white text-xl font-bold">O</span>
               </div>
               <div>
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Cortex
+                  OuraGPT
                 </h1>
                 <p className="text-xs text-gray-500">
-                  Your Oura Ring AI Assistant
+                  Chat with Your Oura Ring Data
                 </p>
               </div>
             </div>
             <button
               onClick={() => setShowDashboard(!showDashboard)}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none rounded-lg text-sm font-medium text-gray-700 transition-colors"
+              aria-label={showDashboard ? "Hide dashboard" : "Show dashboard"}
+              aria-expanded={showDashboard}
             >
               {showDashboard ? "Hide" : "Show"} Dashboard
             </button>
           </div>
-        </div>
+        </nav>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <main id="main-content" className="max-w-7xl mx-auto px-4 py-6">
         {/* Dashboard Section */}
         {showDashboard && messages.length === 0 && (
           <div className="mb-8 space-y-6">
             {/* Welcome Card */}
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white shadow-xl">
-              <h2 className="text-3xl font-bold mb-2">
+            <section className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white shadow-xl" aria-labelledby="welcome-heading">
+              <h2 id="welcome-heading" className="text-3xl font-bold mb-2">
                 Welcome to Your Health Dashboard
               </h2>
               <p className="text-blue-100">
                 Ask me anything about your Oura Ring data, or use the quick
                 prompts below to get started.
               </p>
-            </div>
+            </section>
 
             {/* Quick Actions */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            <section aria-labelledby="quick-questions-heading">
+              <h2 id="quick-questions-heading" className="text-lg font-semibold text-gray-800 mb-4">
                 Quick Questions
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" role="list">
                 {samplePrompts.map((prompt, idx) => (
                   <button
                     key={idx}
@@ -230,9 +232,11 @@ export default function Home() {
                       setInput(prompt.text);
                       setShowDashboard(false);
                     }}
-                    className="bg-white rounded-xl p-4 hover:shadow-lg transition-all text-left group border border-gray-100"
+                    className="bg-white rounded-xl p-4 hover:shadow-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all text-left group border border-gray-100"
+                    aria-label={`Quick question: ${prompt.text}`}
+                    role="listitem"
                   >
-                    <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">
+                    <div className="text-3xl mb-2 group-hover:scale-110 transition-transform" aria-hidden="true">
                       {prompt.icon}
                     </div>
                     <p className="text-sm font-medium text-gray-700">
@@ -241,13 +245,13 @@ export default function Home() {
                   </button>
                 ))}
               </div>
-            </div>
+            </section>
 
             {/* Info Cards */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            <section aria-labelledby="available-metrics-heading">
+              <h2 id="available-metrics-heading" className="text-lg font-semibold text-gray-800 mb-4">
                 Available Metrics
-              </h3>
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <MetricCard
                   title="Sleep Quality"
@@ -278,18 +282,19 @@ export default function Home() {
                   subtitle="Continuous HR monitoring"
                 />
               </div>
-            </div>
+            </section>
           </div>
         )}
 
         {/* Chat Interface */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <section className="bg-white rounded-2xl shadow-xl overflow-hidden" aria-labelledby="chat-heading">
+          <h2 id="chat-heading" className="sr-only">Chat Interface</h2>
           {/* Messages Container */}
-          <div className="h-[500px] overflow-y-auto p-6 bg-gray-50">
+          <div className="h-[500px] overflow-y-auto p-6 bg-gray-50" role="log" aria-live="polite" aria-atomic="false" aria-label="Chat messages">
             {messages.length === 0 ? (
               <div className="h-full flex items-center justify-center">
                 <div className="text-center">
-                  <div className="text-6xl mb-4">🤖</div>
+                  <div className="text-6xl mb-4" aria-hidden="true">🤖</div>
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">
                     Start a Conversation
                   </h3>
@@ -316,7 +321,7 @@ export default function Home() {
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-sm font-semibold">
-                          {message.role === "user" ? "You" : "Cortex"}
+                          {message.role === "user" ? "You" : "OuraGPT"}
                         </span>
                       </div>
                       <div className="space-y-3">
@@ -530,7 +535,7 @@ export default function Home() {
                     <div className="bg-white shadow-md rounded-2xl px-6 py-4 max-w-3xl">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-sm font-semibold text-gray-800">
-                          Cortex
+                          OuraGPT
                         </span>
                       </div>
                       <div className="flex items-center gap-3 text-gray-600">
@@ -571,14 +576,20 @@ export default function Home() {
 
           {/* Input Area */}
           <div className="border-t border-gray-200 bg-white p-6">
-            <form onSubmit={onSubmit} className="flex gap-4">
+            <form onSubmit={onSubmit} className="flex gap-4" aria-label="Chat input form">
+              <label htmlFor="chat-input" className="sr-only">
+                Ask about your Oura Ring data
+              </label>
               <input
+                id="chat-input"
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask about your Oura Ring data..."
-                className="flex-1 px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800 placeholder-gray-400 text-base"
+                className="flex-1 px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none text-gray-800 placeholder-gray-400 text-base"
                 disabled={status === "submitted" || status === "streaming"}
+                aria-label="Chat message input"
+                autoComplete="off"
               />
               <button
                 type="submit"
@@ -587,14 +598,15 @@ export default function Home() {
                   status === "streaming" ||
                   !input.trim()
                 }
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed font-semibold transition-all shadow-md hover:shadow-lg"
+                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed font-semibold transition-all shadow-md hover:shadow-lg"
+                aria-label="Send message"
               >
                 Send
               </button>
             </form>
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
   );
 }

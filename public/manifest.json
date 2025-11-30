@@ -1,0 +1,28 @@
+{
+  "name": "OuraGPT - Chat with Your Oura Ring Data",
+  "short_name": "OuraGPT",
+  "description": "Chat with your Oura Ring data using AI. Get personalized insights about your sleep, activity, readiness, and overall health metrics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "lifestyle", "productivity"],
+  "lang": "en-US",
+  "dir": "ltr"
+}
+

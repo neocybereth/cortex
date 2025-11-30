@@ -1,0 +1,10 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow specific paths
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://ouragpt.com/sitemap.xml
+

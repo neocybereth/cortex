@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
     const result = streamText({
       model: openrouter(DEFAULT_MODEL), // No change here, but now it's fully compatible
-      system: `You are Cortex, an AI assistant that helps users understand their Oura Ring health data. 
+      system: `You are OuraGPT, an AI assistant that helps users understand their Oura Ring health data. 
 Today's date is ${today}. When users ask about recent data (like "this week" or "yesterday"), calculate the appropriate dates based on today's date.
 Always use YYYY-MM-DD format for dates when calling the Oura tools.
 Provide insights and interpretations of the data in a helpful, conversational way.`,

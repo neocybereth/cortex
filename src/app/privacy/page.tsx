@@ -1,3 +1,11 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description:
+    "Learn how OuraGPT protects your privacy and handles your Oura Ring health data. We are committed to keeping your personal health information secure.",
+};
+
 export default function Privacy() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -9,7 +17,7 @@ export default function Privacy() {
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-black mb-4">Introduction</h2>
             <p className="text-black mb-4">
-              Cortex ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our personal health data analysis application.
+              OuraGPT ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our personal health data analysis application.
             </p>
           </section>
 
